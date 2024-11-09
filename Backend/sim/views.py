@@ -8,6 +8,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate, login, logout
 from .forms import CreateUserForm
 
+from django.contrib.auth.models import User
+
 
 @ensure_csrf_cookie
 @require_http_methods(['GET'])
@@ -65,3 +67,9 @@ def register(request):
     else:
         errors = form.errors.as_json()
         return JsonResponse({'error': errors}, status=400)
+    
+
+@require_http_methods(['GET'])
+def get_all_users(request):
+    users = User.objects.all().values('username', 'email')
+    return JsonResponse(list(users), safe=False)
