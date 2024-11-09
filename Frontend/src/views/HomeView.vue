@@ -7,5 +7,4 @@
 <template>
   <Hero />
   <HomeCards />
-  <JobListings :limit="3" :showButton="true"/>
 </template>

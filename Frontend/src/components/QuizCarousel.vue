@@ -1,38 +1,13 @@
 <script setup>
-import { reactive, defineProps, ref } from 'vue';
+import { reactive, defineProps, onMounted, ref } from 'vue';
 import { RouterLink } from 'vue-router';
-import CarouselSlide from './CarouselCard.vue';
+import PulseLoader from 'vue-spinner/src/PulseLoader.vue';
+import axios from 'axios';
+import CarouselSlide from './CarouselSlide.vue';
 
-// Hardcoded quiz data
 const state = reactive({
-  quizzes: [
-    {
-      id: 1,
-      title: "General Knowledge",
-      description: "Test your general knowledge with a variety of topics.",
-    },
-    {
-      id: 2,
-      title: "Science Trivia",
-      description: "Challenge yourself with fascinating science questions.",
-    },
-    {
-      id: 3,
-      title: "History Quiz",
-      description: "How much do you know about world history?",
-    },
-    {
-      id: 4,
-      title: "Movie Trivia",
-      description: "Are you a movie buff? Prove it with this quiz!",
-    },
-    {
-      id: 5,
-      title: "Sports Quiz",
-      description: "Show off your sports knowledge with this quiz!",
-    },
-  ],
-  isLoading: false,
+  quizzes: [],
+  isLoading: true,
   currentIndex: 0, // Track current slide index
 });
 
@@ -41,6 +16,17 @@ defineProps({
   showButton: {
     type: Boolean,
     default: false,
+  }
+});
+
+onMounted(async () => {
+  try {
+    const response = await axios.get('/api/quizzes'); // Adjust API endpoint for quizzes
+    state.quizzes = response.data;
+  } catch (error) {
+    console.error('Error fetching quizzes', error);
+  } finally {
+    state.isLoading = false;
   }
 });
 
@@ -63,7 +49,6 @@ const prevSlide = () => {
       </h2>
       
       <div v-if="state.isLoading" class="text-center text-gray-500 py-6">
-        <!-- Loading state (not needed here, but kept for consistency) -->
         <PulseLoader />
       </div>
       

@@ -1,15 +1,12 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 import HomeView from '@/views/HomeView.vue'
-import JobsView from "@/views/JobsView.vue";
 import NotFoundView from "@/views/NotFoundView.vue";
-import JobView from "@/views/JobView.vue";
-import AddJob from "@/views/AddJob.vue";
-import EditJobView from '@/views/EditJobView.vue';
 import Login from "@/views/auth/Login.vue";
-import LoginTut from "@/views/tut/LoginTut.vue";
-import RegisterTut from "@/views/tut/RegisterTut.vue";
-import HomeView2 from "@/views/tut/HomeView.vue";
+import Register from "@/views/auth/Register.vue";
+import ComingSoon from "@/views/ComingSoon.vue";
+import QuizView from "@/views/QuizView.vue";
+import TestQuestion from "@/views/tut/TestQuestion.vue";
 
 const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
@@ -17,37 +14,37 @@ const router = createRouter({
 		{
 			path: '/',
 			name: 'home',
-			component: HomeView2,
+			component: HomeView,
 		},
 		{
-			path: '/jobs',
-			name: 'jobs',
-			component: JobsView,
+			path: '/quiz',
+			name: 'startQuiz',
+			component: TestQuestion,
 		},
 		{
-			path: '/jobs/:id',
-			name: 'job',
-			component: JobView,
+			path: '/quiz/create',
+			name: 'createQuiz',
+			component: ComingSoon,
 		},
 		{
-			path: '/jobs/add',
-			name: 'add-job',
-			component: AddJob,
+			path: '/leaderboard',
+			name: 'viewLeaderboard',
+			component: ComingSoon,
 		},
 		{
-			path: '/jobs/edit/:id',
-			name: 'edit-job',
-			component: EditJobView,
+			path: '/quizzes',
+			name: 'viewMyQuizzes',
+			component: ComingSoon,
 		},
 		{
 			path: '/login',
 			name: 'login',
-			component: LoginTut,
+			component: Login,
 		},
 		{
 			path: '/register',
 			name: 'register',
-			component: RegisterTut,
+			component: Register,
 		},
 		{
 			path: '/:catchAll(.*)',
