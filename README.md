@@ -56,6 +56,9 @@ To get started with *Trivia Time*, clone this repository and follow these steps:
       ```bash
       npm run dev
       ```
+      
+3. **Environment Variables**:
+   - For the OpenAI feedback feature, set up an OpenAI API key in the environment variables.
 
 ## Future Enhancements
 
@@ -72,6 +75,3 @@ This project was developed as a learning exercise in full-stack development, par
 ---
 
 Enjoy playing and learning with **Trivia Time**! If you have any questions, suggestions, or issues, feel free to open an issue or submit a pull request.
-
-3. **Environment Variables**:
-   - For the OpenAI feedback feature, set up an OpenAI API key in the environment variables.
