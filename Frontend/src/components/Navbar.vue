@@ -75,11 +75,11 @@ const logout = async () => {
                 My Quizzes
               </RouterLink>
               <RouterLink
-                to="/settings"
+                to="/profile"
                 :class="[isActiveLink('/settings') ? 'bg-blue-900' : 'hover:bg-blue-600 hover:text-white', 
                   'text-white', 'rounded-md', 'px-4', 'py-2', 'transition-colors']"
               >
-                Settings
+                Profile
               </RouterLink>
               <button
                 @click="logout"
