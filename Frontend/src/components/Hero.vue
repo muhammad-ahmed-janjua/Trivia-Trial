@@ -15,7 +15,7 @@ defineProps({
   }
 });
 	onMounted(async () => {
-		await authStore.fetchUser();
+		await authStore.fetchUserStats();
 	});
 
 </script>
@@ -31,7 +31,7 @@ defineProps({
 
         <!-- Welcome Back Section (Only shown if the user is logged in) -->
         <div v-if="authStore.isAuthenticated" class="mt-4 text-2xl text-[#ffdd57] font-semibold"> <!-- Bright Yellow Text -->
-          Welcome back, {{ authStore.user?.username }}!
+          Welcome back, {{ authStore.userStats }}!
         </div>
 
         <!-- Subtitle -->

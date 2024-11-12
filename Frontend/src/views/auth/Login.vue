@@ -60,7 +60,7 @@
 			  >
 				Login
 			  </button>
-			  <router-link to="/login" class="w-full">
+			  <router-link to="/register" class="w-full">
 				<div class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-full w-full text-center focus:outline-none focus:shadow-outline">
 					Create Account?
 				</div>

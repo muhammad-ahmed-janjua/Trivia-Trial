@@ -5,7 +5,8 @@ export const useAuthStore = defineStore('auth', {
         const storedState = localStorage.getItem('authState')
         return storedState ? JSON.parse(storedState) : {
             user: null,
-            isAuthenticated: false
+            isAuthenticated: false,
+			userStats: null
         }
     },
     actions: {
@@ -89,30 +90,26 @@ export const useAuthStore = defineStore('auth', {
             this.saveState()
         },
 
-		async fetchAllUsers() {
-            /*
-            Fetches all users and stores them in the users state.
-            */
-            try {
-                const response = await fetch('http://localhost:8000/api/users', {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': getCSRFToken()
-                    },
-                    credentials: 'include'
-                })
-
-                if (response.ok) {
-                    const data = await response.json()
-                    this.users = data  // Store fetched users in the users state
-                } else {
-                    console.error('Failed to fetch users', response.statusText)
-                }
-            } catch (error) {
-                console.error('An error occurred while fetching users:', error)
-            }
-        },
+		async fetchUserStats() {
+			try {
+			  const response = await fetch('http://localhost:8000//api/user/stats', {
+				method: 'GET',
+				credentials: 'include',
+				headers: {
+				  'Content-Type': 'application/json',
+				  'X-CSRFToken': getCSRFToken(),
+				},
+			  });
+	  
+			  if (response.ok) {
+				this.userStats = await response.json();
+			  } else {
+				console.error('Failed to fetch user stats');
+			  }
+			} catch (error) {
+			  console.error('Error fetching user stats:', error);
+			}
+		  },
 
         saveState() {
             /*
