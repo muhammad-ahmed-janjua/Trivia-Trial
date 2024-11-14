@@ -9,5 +9,6 @@ urlpatterns = [
     path('api/register', views.register, name='register'),
 	path('api/users', views.get_all_users, name='users'),
 	path('api/user/stats', views.get_user_stats, name='user_stats'),
-	path('api/user/stats/update', views.update_user_stats, name='update_user_stats')
+	path('api/user/stats/update', views.update_user_stats, name='update_user_stats'),
+	path('api/trivia/questions/', views.TriviaQuestionsView.as_view(), name='trivia-questions'),
 ]

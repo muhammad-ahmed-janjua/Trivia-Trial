@@ -11,6 +11,13 @@ from .forms import CreateUserForm
 
 from django.contrib.auth.models import User
 
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from django.db.models import Count
+from .models import Category, Question
+from random import sample
+
 
 @ensure_csrf_cookie
 @require_http_methods(['GET'])
@@ -99,3 +106,54 @@ def update_user_stats(request):
     profile.update_category_performance(category_name, score)
 
     return JsonResponse({'message': 'User stats updated successfully'})
+
+# Quiz View
+
+class TriviaQuestionsView(APIView):
+    """
+    API endpoint that retrieves trivia questions based on specified parameters.
+    Parameters:
+        - category: Name of the category to filter questions (optional).
+        - limit: Number of questions to return (optional, default is 10).
+        - random: Boolean indicating if questions should be randomly selected (optional, default is False).
+    """
+
+    def get(self, request, *args, **kwargs):
+        # Get parameters from the request
+        category_name = request.query_params.get('category')
+        limit = int(request.query_params.get('limit', 10))
+        randomize = request.query_params.get('random', 'false').lower() == 'true'
+        
+        # Fetch questions based on the category
+        if category_name:
+            try:
+                category = Category.objects.get(name__iexact=category_name)
+                questions_queryset = Question.objects.filter(category=category)
+            except Category.DoesNotExist:
+                return Response(
+                    {"error": "Category not found"}, status=status.HTTP_404_NOT_FOUND
+                )
+        else:
+            questions_queryset = Question.objects.all()
+
+        # Randomize questions if requested
+        if randomize:
+            total_questions = questions_queryset.count()
+            limit = min(limit, total_questions)  # Ensure limit does not exceed available questions
+            questions = sample(list(questions_queryset), limit)
+        else:
+            questions = questions_queryset[:limit]
+
+        # Serialize the questions
+        questions_data = []
+        for question in questions:
+            options = question.options.all()
+            options_data = [{"text": option.text, "is_correct": option.is_correct} for option in options]
+            questions_data.append({
+                "uid": question.uid,  # Use uid instead of id
+                "text": question.text,
+                "category": question.category.name,
+                "options": options_data
+            })
+
+        return Response({"questions": questions_data}, status=status.HTTP_200_OK)

@@ -19,7 +19,7 @@ class UserProfile(BaseModel):
 
 	def update_category_performance(self, category_name, score):
 		if category_name not in self.categories_performance:
-			self.categories_performance[category_name] = {'total score': 0, 'attempts': 0}
+			self.categories_performance[category_name] = {'total_score': 0, 'attempts': 0}
 		self.categories_performance[category_name]['total_score'] += score
 		self.categories_performance[category_name]['attempts'] += 1
 		self.save()
