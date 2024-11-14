@@ -10,19 +10,29 @@
     "server": "json-server --watch src/jobs2.json --port 5001"
   },
   "dependencies": {
+    "@vueuse/core": "^11.2.0",
+    "@vueuse/motion": "^2.2.6",
     "axios": "^1.7.7",
     "json-server": "^1.0.0-beta.3",
+    "motion": "^11.11.15",
     "pinia": "^2.2.6",
     "primeicons": "^7.0.0",
     "vue": "^3.5.12",
+    "vue-motion-one": "^0.3.0",
+    "vue-responsive-components": "^0.2.3",
     "vue-router": "^4.4.5",
     "vue-spinner": "^1.0.4",
     "vue-toastification": "^2.0.0-rc.5"
   },
   "devDependencies": {
+    "@inspira-ui/plugins": "^0.0.1",
     "@vitejs/plugin-vue": "^5.1.4",
     "autoprefixer": "^10.4.20",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.1",
     "postcss": "^8.4.47",
+    "sass-embedded": "^1.80.7",
+    "tailwind-merge": "^2.5.4",
     "tailwindcss": "^3.4.14",
     "vite": "^5.4.10"
   }

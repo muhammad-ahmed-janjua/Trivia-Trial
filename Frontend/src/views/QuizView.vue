@@ -1,163 +1,129 @@
-<script setup>
-import { ref, onMounted } from 'vue';
-import axios from 'axios';
-import Question from '@/components/TestQuestion.vue'
-/*
-const quizId = 1; // Replace with dynamic ID if needed
-const quiz = ref(null);
-const currentQuestionIndex = ref(0);
-const userAnswers = ref([]);
-
-const loadQuizData = async () => {
-  try {
-    const response = await axios.get(`/api/quiz/${quizId}/data`);
-    quiz.value = response.data;
-    userAnswers.value = Array(quiz.value.questions.length).fill(null);
-  } catch (error) {
-    console.error("Error loading quiz data:", error);
-  }
-};
-*/
-
-// Hardcoded quiz data
-const quiz = ref({
-  id: 1,
-  title: "General Knowledge Quiz",
-  questions: [
-    {
-      id: 1,
-      text: "What is the capital of France?",
-      options: [
-        { id: 1, text: "Berlin" },
-        { id: 2, text: "Madrid" },
-        { id: 3, text: "Paris" },
-        { id: 4, text: "Rome" }
-      ]
-    },
-    {
-      id: 2,
-      text: "Which planet is known as the Red Planet?",
-      options: [
-        { id: 1, text: "Earth" },
-        { id: 2, text: "Jupiter" },
-        { id: 3, text: "Mars" },
-        { id: 4, text: "Venus" }
-      ]
-    },
-    {
-      id: 3,
-      text: "Who wrote 'To Kill a Mockingbird'?",
-      options: [
-        { id: 1, text: "Harper Lee" },
-        { id: 2, text: "F. Scott Fitzgerald" },
-        { id: 3, text: "Ernest Hemingway" },
-        { id: 4, text: "Mark Twain" }
-      ]
-    }
-  ]
-});
-
-const currentQuestionIndex = ref(0);
-const userAnswers = ref(Array(quiz.value.questions.length).fill(null));
-
-const nextQuestion = () => {
-  if (currentQuestionIndex.value < quiz.value.questions.length - 1) {
-    currentQuestionIndex.value += 1;
-  }
-};
-
-const prevQuestion = () => {
-  if (currentQuestionIndex.value > 0) {
-    currentQuestionIndex.value -= 1;
-  }
-};
-
-const submitQuiz = () => {
-  console.log("User answers:", userAnswers.value);
-  // Add logic here to handle quiz submission, e.g., sending data to the server
-};
-
-onMounted(() => {
-  loadQuizData();
-});
-</script>
-
 <template>
-	<section class="p-4">
-	  <h2 class="text-3xl font-bold mb-6 text-center">{{ quiz.title }}</h2>
+	<div class="quiz-view">
+	  <h1>Trivia Quiz</h1>
   
-	  <!-- Display current question -->
-	  <QuestionComponent
-		:question="quiz.questions[currentQuestionIndex]"
-		v-model="userAnswers[currentQuestionIndex]"
-	  />
+	  <!-- QuizOptions component to gather quiz settings from the user -->
+	  <QuizOptions :categories="categories" @start-quiz="startQuiz" />
   
-	  <!-- Navigation Controls -->
-	  <div class="flex justify-between mt-6">
-		<button
-		  @click="prevQuestion"
-		  :disabled="currentQuestionIndex === 0"
-		  class="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600"
-		>
-		  Previous
-		</button>
-		<button
-		  v-if="currentQuestionIndex < quiz.questions.length - 1"
-		  @click="nextQuestion"
-		  class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
-		>
-		  Next
-		</button>
-		<button
-		  v-else
-		  @click="submitQuiz"
-		  class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600"
-		>
-		  Submit Quiz
-		</button>
+	  <!-- Display quiz questions once quiz starts -->
+	  <div v-if="quizStarted && questions.length" class="quiz-questions">
+		<h2>Quiz</h2>
+		<div v-for="(question, index) in questions" :key="question.id" class="question">
+		  <p><strong>Q{{ index + 1 }}: {{ question.text }}</strong></p>
+		  <ul>
+			<li v-for="option in question.options" :key="option.text">
+			  <label>
+				<input type="radio" :name="'question-' + index" :value="option.text" v-model="userAnswers[index]" />
+				{{ option.text }}
+			  </label>
+			</li>
+		  </ul>
+		</div>
+		<button @click="submitQuiz">Submit Quiz</button>
 	  </div>
-	</section>
-</template>
+	</div>
+  </template>
+  
+  <script>
+  import axios from 'axios';
+  import QuizOptions from './QuizOptionsView.vue';
+  import { getCSRFToken } from '../store/auth';
+  
+  export default {
+	name: "QuizView",
+	components: {
+	  QuizOptions,
+	},
+	data() {
+	  return {
+		categories: ["Animals", "History", "Geography", "Science", "Entertainment"], // Replace with dynamic data if needed
+		quizStarted: false,
+		questions: [],
+		userAnswers: [],
+		quizOptions: null,
+	  };
+	},
+	methods: {
+	  async startQuiz(options) {
+		this.quizOptions = options;
+		try {
+		  // Fetch questions based on the options selected in QuizOptions
+		  const params = {
+			limit: options.limit,
+			random: options.random,
+		  };
+		  if (options.category) {
+			params.category = options.category;
+		  }
+  
+		  const response = await axios.get('http://localhost:8000/api/trivia/questions/', { params });
+		  this.questions = response.data.questions;
+		  this.quizStarted = true;
+  
+		  // Initialize user answers array
+		  this.userAnswers = Array(this.questions.length).fill(null);
+		} catch (error) {
+		  console.error("Error starting quiz:", error);
+		}
+	  },
+	  async submitQuiz() {
+		console.log("submit" + this.quizOptions);
 
-<!--
-<template>
-  <section v-if="quiz" class="p-4">
-    <h2 class="text-3xl font-bold mb-6">{{ quiz.title }}</h2>
+		// Calculate the score based on correct answers
+		this.score = this.calculateScore();
+		console.log(this.quizOptions.category)
+		// Prepare the data to match the stats structure
+		const payload = {
+			category: this.quizOptions.category,
+			score: this.score
+		};
 
-    
-    <QuestionComponent
-      :question="quiz.questions[currentQuestionIndex]"
-      v-model="userAnswers[currentQuestionIndex]"
-    />
+		// Call the API to update user stats with the calculated score and selected category
+		try {
+			const response = await axios.post(
+			'http://localhost:8000/api/user/stats/update',
+			payload,
+			{
+				headers: {
+				'X-CSRFToken': getCSRFToken() // Include CSRF token from authStore
+				},
+				withCredentials: true // Ensure cookies are sent in the request
+			}
+			);
 
-    
-    <div class="flex justify-between mt-6">
-      <button
-        @click="prevQuestion"
-        :disabled="currentQuestionIndex === 0"
-        class="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600"
-      >
-        Previous
-      </button>
-      <button
-        v-if="currentQuestionIndex < quiz.questions.length - 1"
-        @click="nextQuestion"
-        class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
-      >
-        Next
-      </button>
-      <button
-        v-else
-        @click="submitQuiz"
-        class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600"
-      >
-        Submit Quiz
-      </button>
-    </div>
-  </section>
+			// Log the server response for debugging
+			console.log(response.data.message); // Expected response: 'User stats updated successfully'
 
-  <section v-else class="text-center py-10 text-gray-500">
-    Loading quiz...
-  </section>
-</template>
--->
+			// Optionally: Update local stats representation if needed
+			// e.g., this.userStats = response.data.updatedStats;
+
+		} catch (error) {
+			console.error('Error updating user stats:', error);
+		}
+		},
+
+    calculateScore() {
+      let score = 0;
+      this.questions.forEach((question, index) => {
+        const correctOption = question.options.find(option => option.is_correct);
+        if (this.userAnswers[index] === correctOption.text) {
+          score++;
+        }
+      });
+      return score;
+    }
+  }
+  };
+  </script>
+  
+  <style scoped>
+  .quiz-view {
+	padding: 20px;
+  }
+  .quiz-questions {
+	margin-top: 20px;
+  }
+  .question {
+	margin: 10px 0;
+  }
+  </style>

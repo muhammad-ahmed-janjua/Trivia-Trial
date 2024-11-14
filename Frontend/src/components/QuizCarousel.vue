@@ -3,7 +3,7 @@ import { reactive, defineProps, onMounted, ref } from 'vue';
 import { RouterLink } from 'vue-router';
 import PulseLoader from 'vue-spinner/src/PulseLoader.vue';
 import axios from 'axios';
-import CarouselSlide from './CarouselSlide.vue';
+import CarouselSlide from './CarouselCard.vue';
 
 const state = reactive({
   quizzes: [],
@@ -75,7 +75,7 @@ const prevSlide = () => {
 
   <section v-if="showButton" class="m-auto max-w-lg my-10 px-6">
     <RouterLink
-      to="/quizzes"
+      to="/"
       class="block bg-black text-white text-center py-4 px-6 rounded-xl hover:bg-gray-700"
     >
       View All Quizzes

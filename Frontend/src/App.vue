@@ -1,15 +1,18 @@
 <script setup>
-  import navbar from './components/Navbar.vue';
+  import Navbar from './components/navbar/Navbar.vue';
   import Footer from './components/Footer.vue';
+  import DarkMode from './components/utility/DarkMode.vue';
   import { RouterView } from 'vue-router';
 </script>
 
 <template>
   <div class="min-h-screen flex flex-col">
     <main class="flex-grow">
-      <navbar />
+      <Navbar />
       <RouterView />
+      <DarkMode />
     </main>
     <Footer></Footer>
   </div>
 </template>
+

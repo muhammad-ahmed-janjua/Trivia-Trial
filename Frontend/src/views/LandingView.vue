@@ -2,10 +2,8 @@
 	import Hero from '@/components/Hero.vue';
 	import HomeCards from '@/components/HomeCards.vue';
 	import QuizCarousel from '@/components/QuizCarousel.vue';
-	import LandingHero from '@/components/LandingHero.vue';
 </script>
 
 <template>
-	<LandingHero />
-	<QuizCarousel />
+
 </template>
