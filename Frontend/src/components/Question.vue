@@ -1,81 +1,36 @@
-<template>
-	<div class="questions-view">
-	  <h1>Trivia Questions</h1>
-  
-	  <!-- Form for selecting category, limit, and randomization -->
-	  <form @submit.prevent="fetchQuestions">
-		<label for="category">Select Category:</label>
-		<select v-model="selectedCategory" id="category">
-		  <option value="">All Categories</option>
-		  <option v-for="category in categories" :key="category" :value="category">
-			{{ category }}
-		  </option>
-		</select>
-  
-		<label for="limit">Number of Questions:</label>
-		<input type="number" v-model="questionLimit" id="limit" min="1" />
-  
-		<label for="random">Randomize:</label>
-		<input type="checkbox" v-model="randomizeQuestions" id="random" />
-  
-		<button type="submit">Fetch Questions</button>
-	  </form>
-  
-	  <!-- Display fetched questions and options -->
-	  <div v-if="questions.length">
-		<h2>Questions</h2>
-		<div v-for="question in questions" :key="question.id" class="question">
-		  <p><strong>{{ question.text }}</strong> (Category: {{ question.category }})</p>
-		  <ul>
-			<li v-for="option in question.options" :key="option.text">{{ option.text }}</li>
-		  </ul>
-		</div>
-	  </div>
-	</div>
-  </template>
-  
-  <script>
-  import axios from 'axios';
-  
-  export default {
-	name: 'QuestionsView',
-	data() {
-	  return {
-		categories: ['Animals', 'History', 'Geography', 'Science', 'Entertainment'], // You can fetch this dynamically
-		selectedCategory: '',
-		questionLimit: 10,
-		randomizeQuestions: false,
-		questions: []
-	  };
+<script setup>
+import { defineProps, defineEmits } from 'vue';
+
+defineProps({
+	question: {
+		type: Object,
+		required: true,
 	},
-	methods: {
-	  async fetchQuestions() {
-		try {
-		  // Construct query parameters based on user selections
-		  const params = {
-			limit: this.questionLimit,
-			random: this.randomizeQuestions
-		  };
-		  if (this.selectedCategory) {
-			params.category = this.selectedCategory;
-		  }
-  
-		  // Make API request
-		  const response = await axios.get('http://localhost:8000/api/trivia/questions/', { params });
-		  this.questions = response.data.questions; // Store fetched questions
-		} catch (error) {
-		  console.error('Error fetching questions:', error);
-		}
-	  }
-	}
-  };
-  </script>
-  
-  <style scoped>
-  .questions-view {
-	padding: 20px;
-  }
-  .question {
-	margin: 10px 0;
-  }
-  </style>
+	index: {
+		type: Number,
+		required: true,
+	},
+});
+
+const emit = defineEmits(['answer-selected']);
+
+function selectAnswer(answer) {
+	emit('answer-selected', answer);
+}
+</script>
+
+<template>
+	<div class="questions-view max-w-xl mx-auto p-4 sm:p-5 md:p-6 ">
+		<div v-if="question">
+			<h2 class="text-left text-xl sm:text-2xl md:text-2xl font-inter dark:text-white mb-4 ">
+				{{ question.text }}
+			</h2>
+			<ul class="space-y-2 text-left">
+				<li v-for="option in question.options" :key="option.text" @click="selectAnswer(option.text)"
+					class="cursor:pointer dark:text-white px-3 py-2 border font-inter rounded-md cursor-pointer text-[1.2rem] hover:bg-gray-100 dark:hover:bg-gray-700">
+					{{ option.text }}
+				</li>
+			</ul>
+		</div>
+	</div>
+</template>

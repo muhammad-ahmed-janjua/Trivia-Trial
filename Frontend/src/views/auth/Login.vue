@@ -23,9 +23,9 @@
 </script>
 
 <template>
-	<section class="bg-blue-50 min-h-screen flex items-center justify-center">
+	<section class=" min-h-screen flex items-center justify-center bg-l-bg dark:bg-d-bg">
 	  <div class="container max-w-md">
-		<div class="bg-white px-6 py-8 mb-4 shadow-md rounded-md border m-4 md:m-0">
+		<div class="px-6 py-8 mb-4 shadow-md rounded-[2rem] border m-4 md:m-0 bg-white ">
 		  <h2 class="text-3xl text-center font-semibold mb-6">Trivia Login</h2>
 		  <form @submit.prevent="login">
 			<div class="mb-3">
@@ -55,13 +55,13 @@
 			<div class="d-grid gap-2">
 			  <button
 				id="login-submit"
-				class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline mb-4"
+				class="bg-l-primary hover:bg-l-primary/[0.8] dark:bg-d-accent dark:hover:bg-d-secondary text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline mb-4"
 				type="submit"
 			  >
 				Login
 			  </button>
 			  <router-link to="/register" class="w-full">
-				<div class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-full w-full text-center focus:outline-none focus:shadow-outline">
+				<div class="bg-l-primary/[0.2] hover:bg-l-primary/[0.5] text-black font-bold py-2 px-4 rounded-full w-full text-center focus:outline-none focus:shadow-outline">
 					Create Account?
 				</div>
 			  </router-link>

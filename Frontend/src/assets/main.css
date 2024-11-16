@@ -3,6 +3,8 @@
 @tailwind utilities;
 
 @layer base {
+
+	
   :root {
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
@@ -34,6 +36,13 @@
     --radius: 0.5rem;
   }
 
+  .inter-font {
+	font-family: "Inter", sans-serif;
+	font-optical-sizing: auto;
+	font-weight: 200;
+	font-style: normal;
+  }
+  
   .dark {
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;

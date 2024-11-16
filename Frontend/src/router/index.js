@@ -6,8 +6,6 @@ import Login from "@/views/auth/Login.vue";
 import Register from "@/views/auth/Register.vue";
 import ComingSoon from "@/views/ComingSoon.vue";
 import QuizView from "@/views/QuizView.vue";
-import TestQuestion from "@/views/tut/TestQuestion.vue";
-import ProfileTut from "@/views/tut/ProfileTut.vue";
 
 const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
@@ -50,7 +48,7 @@ const router = createRouter({
 		{
 			path: '/profile',
 			name: 'profile',
-			component: ProfileTut,
+			component: ComingSoon,
 		},
 		{
 			path: '/:catchAll(.*)',

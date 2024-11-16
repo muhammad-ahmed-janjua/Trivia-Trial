@@ -16,7 +16,7 @@ import { RouterLink } from 'vue-router';
 
       <RouterLink
         to="/"
-        class="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition-colors"
+        class="bg-d-primary text-white px-6 py-3 rounded-lg hover:bg-d-primary/[0.9] transition-colors"
       >
         Back to Home
       </RouterLink>
