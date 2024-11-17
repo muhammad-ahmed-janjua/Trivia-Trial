@@ -25,7 +25,14 @@ SECRET_KEY = 'django-insecure-e34+pv-knz+z+a(+ywg1f96j1&1$s0g287&pyr4q#5v#1+*mjh
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+	'3.27.120.239', 	
+	"http://trivia-trial.vercel.app",
+	"https://www.triviatime.au",
+	"https://www.triviatime.au", 
+	'127.0.0.1', 
+	'localhost'
+	]
 
 
 # Application definition
