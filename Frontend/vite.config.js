@@ -15,10 +15,10 @@ export default defineConfig({
     vue(), // Add Vue plugin for .vue file handling
   ],
   server: {
-    port: 3000, // Dev server port
+    port: parseInt(process.env.VITE_DEV_SERVER_PORT) || 3000, // Dev server port
     proxy: {
       '/api': {
-        target: 'http://localhost:5001', // Proxy API requests to backend
+        target: process.env.VITE_API_BASE_URL, // Proxy API requests to backend
         changeOrigin: true, // Change the origin of the request to the target
         rewrite: (path) => path.replace(/^\/api/, ''), // Remove "/api" from the request path
       },

@@ -39,6 +39,7 @@ import QuizOptions from './QuizOptionsView.vue';
 import Question from '@/components/Question.vue';
 import { getCSRFToken } from '../store/auth';
 import { useToast } from "vue-toastification";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export default {
 	name: "QuizView",
@@ -73,7 +74,7 @@ export default {
 				}
 
 				const response = await axios.get(
-					`http://localhost:8000/api/trivia/questions/?${params.toString()}`
+					`${API_BASE_URL}/trivia/questions/?${params.toString()}`
 				);
 
 				this.questions = response.data.questions;
@@ -109,7 +110,7 @@ export default {
 
 			try {
 				const response = await axios.post(
-					'http://localhost:8000/api/user/stats/update',
+					`${API_BASE_URL}/user/stats/update`,
 					payload,
 					{
 						headers: {

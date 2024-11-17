@@ -1,5 +1,7 @@
 import { defineStore } from 'pinia'
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 export const useAuthStore = defineStore('auth', {
     state: () => {
         const storedState = localStorage.getItem('authState')
@@ -11,14 +13,14 @@ export const useAuthStore = defineStore('auth', {
     },
     actions: {
         async setCsrfToken() {
-            await fetch('http://localhost:8000/api/set-csrf-token', {
+            await fetch(`${API_BASE_URL}/api/set-csrf-token`, {
                 method: 'GET',
                 credentials: 'include'
             })
         },
 
         async login(email, password, router=null) {
-            const response = await fetch('http://localhost:8000/api/login', {
+            const response = await fetch(`${API_BASE_URL}/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -43,7 +45,7 @@ export const useAuthStore = defineStore('auth', {
 
         async logout(router=null) {
             try {
-                const response = await fetch('http://localhost:8000/api/logout', {
+                const response = await fetch(`${API_BASE_URL}/logout`, {
                     method: 'POST',
                     headers: {
                         'X-CSRFToken': getCSRFToken()
@@ -66,7 +68,7 @@ export const useAuthStore = defineStore('auth', {
 
         async fetchUser() {
             try {
-                const response = await fetch('http://localhost:8000/api/user', {
+                const response = await fetch(`${API_BASE_URL}/user`, {
                     credentials: 'include',
                     headers: {
                         'Content-Type': 'application/json',
@@ -92,7 +94,7 @@ export const useAuthStore = defineStore('auth', {
 
 		async fetchUserStats() {
 			try {
-			  const response = await fetch('http://localhost:8000//api/user/stats', {
+			  const response = await fetch(`${API_BASE_URL}/user/stats`, {
 				method: 'GET',
 				credentials: 'include',
 				headers: {
@@ -112,13 +114,6 @@ export const useAuthStore = defineStore('auth', {
 		  },
 
         saveState() {
-            /*
-            We save state to local storage to keep the
-            state when the user reloads the page.
-
-            This is a simple way to persist state. For a more robust solution,
-            use pinia-persistent-state.
-             */
             localStorage.setItem('authState', JSON.stringify({
                 user: this.user,
                 isAuthenticated: this.isAuthenticated
@@ -128,10 +123,6 @@ export const useAuthStore = defineStore('auth', {
 })
 
 export function getCSRFToken() {
-    /*
-    We get the CSRF token from the cookie to include in our requests.
-    This is necessary for CSRF protection in Django.
-     */
     const name = 'csrftoken';
     let cookieValue = null;
     if (document.cookie && document.cookie !== '') {

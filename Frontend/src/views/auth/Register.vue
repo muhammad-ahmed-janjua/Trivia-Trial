@@ -9,12 +9,13 @@ const email = ref('');
 const password = ref('');
 const error = ref('');
 const success = ref('');
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const register = async () => {
   try {
-    console.log('Attempting registration with email:', email.value); // Debugging log
+    console.log('Attempting registration with email:', email.value); 
 
-    const response = await fetch('http://localhost:8000/api/register', {
+    const response = await fetch(`${API_BASE_URL}/register`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
