@@ -35,9 +35,6 @@ export default defineConfig({
   build: {
     outDir: 'dist', // Output directory for production builds
     emptyOutDir: true, // Clear output directory before building
-    rollupOptions: {
-      input: fileURLToPath(new URL('./src/main.ts', import.meta.url)), // Main entry point
-    },
   },
   base: '/', // Base URL for the app (use "/" for Vercel deployments)
 });
