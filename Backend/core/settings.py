@@ -55,8 +55,16 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOWED_ORIGINS = ["http://trivia-trial.vercel.app"]  # We add your frontend URL here.
-CSRF_TRUSTED_ORIGINS = ['http://trivia-trial.vercel.app']  # We add your frontend URL here.
+CORS_ALLOWED_ORIGINS = [
+	"http://trivia-trial.vercel.app",
+	"https://www.triviatime.au",
+	"https://www.triviatime.au",
+	]  # We add your frontend URL here.
+CSRF_TRUSTED_ORIGINS = [
+	"http://trivia-trial.vercel.app",
+	"https://www.triviatime.au",
+	"https://www.triviatime.au",
+	] 
 
 ROOT_URLCONF = 'core.urls'
 
