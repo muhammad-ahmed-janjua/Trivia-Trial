@@ -39,5 +39,5 @@ export default defineConfig({
       input: fileURLToPath(new URL('./src/main.ts', import.meta.url)), // Main entry point
     },
   },
-  base: '/Frontend/', // Base URL for the app (use "/" for Vercel deployments)
+  base: '/', // Base URL for the app (use "/" for Vercel deployments)
 });
